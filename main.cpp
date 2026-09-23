@@ -24,4 +24,8 @@ int main(int argc, char* argv[]) {
     std::ostringstream buffer;
     buffer << in.rdbuf();
     const std::string text = buffer.str();
+
+    std::cout << "Read " << path << " (" << text.size() << " characters\n";
+
+    return 0;
 }
