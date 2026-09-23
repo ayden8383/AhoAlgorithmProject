@@ -20,4 +20,8 @@ int main(int argc, char* argv[]) {
         std::cerr << "error: cannot open" << path << "\n";
         return 1;
     }
+
+    std::ostringstream buffer;
+    buffer << in.rdbuf();
+    const std::string text = buffer.str();
 }
