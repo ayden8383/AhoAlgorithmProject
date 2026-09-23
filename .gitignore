@@ -1,0 +1,5 @@
+@"
+build/
+.vs/
+results.csv
+"@ | Set-Content -Path .gitignore -Encoding utf8
