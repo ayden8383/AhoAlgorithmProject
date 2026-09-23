@@ -1,8 +1,11 @@
+#include <algorithm>
+#include <cctype>
 #include <fstream>
 #include <iostream>
 #include <sstream>
 #include <string>
 #include <vector>
+#include "matcher.hpp"
 
 int main(int argc, char* argv[]) {
 
@@ -48,10 +51,48 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
+
     std::cout << "\nLooking for " << words.size() << " word(s):\n";
     for (std::size_t i = 0; i < words.size(); i++) {
         std::cout << "  [" << i << "] " << words.at(i) << "\n";
     }
 
+    //lowercase both sides so matching ignors
+    auto to_lower = [](std::string s) {
+        std::transform(s.begin(), s.end(), s.begin(), [](unsigned char c) {
+            return static_cast<char>(std::tolower(c));
+            });
+        return s;
+        };
+
+    std::vector<std::string> patterns;
+    for (const std::string& w : words) {
+        patterns.push_back(to_lower(w));
+    }
+
+    const std::string haystack = to_lower(text);
+
+    const aA::NaiveMatcher matcher(patterns);
+    const std::vector<aA::Match> matches = matcher.scan(haystack);
+
+    std::cout << "\nResults:\n";
+    for (std::size_t i = 0; i < words.size(); i++) {
+        std::cout << "  [" << i << "] " << words.at(i) << "  ";
+
+        int count = 0;
+        for (const aA::Match& m : matches) {
+            if (m.pattern_index != i) continue;
+            const std::size_t start = m.end_pos + 1 - patterns.at(i).size();
+            std::cout << "[" << start << "," << m.end_pos << "] ";
+            ++count;
+        }
+
+        if (count == 0) {
+            std::cout << "not found";
+        }
+        std::cout << "\n";
+    }
+
+    std::cout << "\n";
     return 0;
 }
