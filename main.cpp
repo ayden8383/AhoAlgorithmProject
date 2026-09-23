@@ -17,7 +17,7 @@ int main(int argc, char* argv[]) {
   
     std::ifstream in(path, std::ios::binary);
     if (!in) {
-        std::cerr << "error: cannot open" << path << "\n";
+        std::cerr << "error: cannot open " << path << "\n";
         return 1;
     }
 
@@ -25,11 +25,13 @@ int main(int argc, char* argv[]) {
     buffer << in.rdbuf();
     const std::string text = buffer.str();
 
-    std::cout << "Read " << path << " (" << text.size() << " characters\n";
+    std::cout << "Read " << path << " (" << text.size() << " characters)\n";
 
-    return 0;
+   
 
-    std::cout << "Enter a word or multiple (if more than one word seperate by spaces:\n>) ";
+    std::cout << "Enter a word or multiple (if more than one word seperate by spaces:)\n>) ";
     std::string line;
     std::getline(std::cin, line);
+
+    return 0;
 }
