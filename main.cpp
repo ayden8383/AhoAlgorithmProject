@@ -15,5 +15,9 @@ int main(int argc, char* argv[]) {
         std::getline(std::cin, path);
     }
   
-    
+    std::ifstream in(path, std::ios::binary);
+    if (!in) {
+        std::cerr << "error: cannot open" << path << "\n";
+        return 1;
+    }
 }
