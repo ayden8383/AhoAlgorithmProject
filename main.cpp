@@ -28,4 +28,8 @@ int main(int argc, char* argv[]) {
     std::cout << "Read " << path << " (" << text.size() << " characters\n";
 
     return 0;
+
+    std::cout << "Enter a word or multiple (if more than one word seperate by spaces:\n>) ";
+    std::string line;
+    std::getline(std::cin, line);
 }
