@@ -4,6 +4,8 @@
 #include <string>
 #include <string_view>
 #include <vector>
+#include <array>
+#include <iostream>
 
 namespace aA {
 	struct Match {
@@ -14,13 +16,13 @@ namespace aA {
 	class NaiveMatcher {
 	public:
 		explicit NaiveMatcher(std::vector<std::string> patterns)
-			: patterns_(std::move(patterns)) {}
+			: patterns(std::move(patterns)) {}
 
 		std::vector<Match> scan(std::string_view text) const {
 			std::vector<Match> out;
 
-			 for (std::size_t i = 0; i < patterns_.size(); ++i) {
-				const std::string& pattern = patterns_.at(i);
+			 for (std::size_t i = 0; i < patterns.size(); ++i) {
+				const std::string& pattern = patterns.at(i);
 				if (pattern.empty()) continue;
 
 				std::size_t from = 0;
@@ -37,6 +39,27 @@ namespace aA {
 		}
 
 	private:
-		std::vector<std::string> patterns_;
+		std::vector<std::string> patterns;
+	};
+
+	class AhoCorasick {
+	public:
+		explicit AhoCorasick(std::vector<std::string> patterns)
+			:patterns(std::move(patterns)) {
+			nodes.push_back(Node{});
+			for (std::size_t i = 0; i < patterns.size(); i++) {
+				insert(patterns.at(i), i);
+			}
+		}
+
+	private:
+		struct Node {
+			std::array<int, 256> next{};
+			std::vector<std::size_t> ends;
+			Node() { next.fill(-1); }
+		};
+
+		std::vector<std::string> patterns;
+		std::vector<Node> nodes;
 	};
 }
