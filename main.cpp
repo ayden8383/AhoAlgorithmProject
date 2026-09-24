@@ -84,7 +84,7 @@ int main(int argc, char* argv[]) {
             if (m.pattern_index != i) continue;
             const std::size_t start = m.end_pos + 1 - patterns.at(i).size();
             std::cout << "[" << start << "," << m.end_pos << "] ";
-            ++count;
+            count++;
         }
 
         if (count == 0) {
@@ -92,6 +92,17 @@ int main(int argc, char* argv[]) {
         }
         std::cout << "\n";
     }
+
+    //--- temporary: inspect the trie -------------------------------------
+    const aA::AhoCorasick automaton(patterns);
+    std::cout << "\nTrie: " << automaton.node_count() << " nodes\n";
+    if (words.size() <= 10) {
+        automaton.trie();
+    }
+    else {
+        std::cout << "  (too many words to print)\n";
+    }
+    //---------------------------------------------------------------------
 
     std::cout << "\n";
     return 0;
